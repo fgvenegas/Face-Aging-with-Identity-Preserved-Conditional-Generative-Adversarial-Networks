@@ -3,6 +3,7 @@ import cv2
 import random
 from PIL import Image
 import os.path
+import os
 """
 This code is highly influenced by the implementation of:
 https://github.com/joelthchao/tensorflow-finetune-flickr-style/dataset.py
@@ -32,7 +33,7 @@ class ImageDataGenerator:
                                'test_age_group_4.txt']
             self.pointer = [0, 0, 0, 0, 0, 0]
 
-        self.train_label_pair = '/home/wangzw/Face-Aging-with-Identity-Preserved-Conditional-Generative-Adversarial-Networks-master/tools' \
+        self.train_label_pair = os.path.abspath('.') + '/Face-Aging-with-Identity-Preserved-Conditional-Generative-Adversarial-Networks-master/tools' \
                                 '/train_label_pair.txt'
         self.true_labels = []
         self.false_labels = []
@@ -51,7 +52,7 @@ class ImageDataGenerator:
         self.z_dim = z_dim
         self.img_size = self.height
 
-        self.read_class_list(self.class_lists)
+        # self.read_class_list(self.class_lists)
         if self.shuffle:
             self.shuffle_data(shuffle_all=True)
 
