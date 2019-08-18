@@ -17,24 +17,17 @@ class ImageDataGenerator:
         # Init params
         self.root_folder = '/new_disk2/wangzw/tangxu/CACD_cropped_400/'
         if mode == 'train':
-            self.file_folder = '/new_disk2/wangzw/tangxu/age_data/train_data/'
+            self.file_folder = './'
             self.class_lists = ['train_age_group_0.txt',
-                               'train_age_group_1.txt',
-                               'train_age_group_2.txt',
-                               'train_age_group_3.txt',
-                               'train_age_group_4.txt']
-            self.pointer = [0, 0, 0, 0, 0]
+                               'train_age_group_1.txt']
+            self.pointer = [0, 0]
         else:
-            self.file_folder = '/new_disk2/wangzw/tangxu/age_data/test_data/'
+            self.file_folder = './'
             self.class_lists = ['test_age_group_0.txt',
-                               'test_age_group_1.txt',
-                               'test_age_group_2.txt',
-                               'test_age_group_3.txt',
-                               'test_age_group_4.txt']
-            self.pointer = [0, 0, 0, 0, 0, 0]
+                               'test_age_group_1.txt']
+            self.pointer = [0, 0]
 
-        self.train_label_pair = os.path.abspath('.') + '/Face-Aging-with-Identity-Preserved-Conditional-Generative-Adversarial-Networks-master/tools' \
-                                '/train_label_pair.txt'
+        self.train_label_pair = './tools/train_label_pair.txt'
         self.true_labels = []
         self.false_labels = []
         self.images = []
@@ -52,7 +45,7 @@ class ImageDataGenerator:
         self.z_dim = z_dim
         self.img_size = self.height
 
-        # self.read_class_list(self.class_lists)
+        self.read_class_list(self.class_lists)
         if self.shuffle:
             self.shuffle_data(shuffle_all=True)
 
@@ -408,6 +401,7 @@ class ImageDataGenerator:
                self.label_features_64[error_label], self.age_label[index]
     
     def next_target_batch_transfer2(self):
+        # print(self.true_labels, self.images)
         index = self.true_labels[self.label_pair_index]
         paths = self.images[index][self.pointer[index]:self.pointer[index] + self.batch_size]
         # Read images
@@ -469,6 +463,7 @@ class ImageDataGenerator:
 
 
 def process_target_img(root_folder, img_path, img_size):
+    root_folder = './images/'
     img = cv2.imread(root_folder + img_path)
     img = img[:, :, [2, 1, 0]]
     # rescale image
