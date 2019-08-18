@@ -58,10 +58,10 @@ flags.DEFINE_string("root_folder", 'images/', "folder that contains images")
 FLAGS = flags.FLAGS
 
 # How often to run a batch through the validation model.
-VAL_INTERVAL = 5000
+VAL_INTERVAL = 1000
 
 # How often to save a model checkpoint
-SAVE_INTERVAL = 10000
+SAVE_INTERVAL = 1000
 
 d_iter = 1
 g_iter = 1
@@ -121,22 +121,24 @@ def my_train():
             print(step)
             images, t_label_features_128, t_label_features_64, f_label_features_64, age_labels = \
                 train_generator.next_target_batch_transfer2()
+            print('1!!!!')
             dict = {imgs: images,
                     true_label_features_128: t_label_features_128,
                     true_label_features_64: t_label_features_64,
                     false_label_features_64: f_label_features_64,
                     age_label: age_labels
                     }
+            print('2!!!!')            
             for i in range(d_iter):
                 _, d_loss = sess.run([model.d_optim, d_error], feed_dict=dict)
-
+            print('3!!!!')
             for i in range(g_iter):
                 _, g_loss, fea_loss, age_loss = sess.run([model.g_optim, g_error, fea_error, age_error],
                                                          feed_dict=dict)
-
+            print('4!!!!')
             format_str = ('%s: step %d, d_loss = %.3f, g_loss = %.3f, fea_loss=%.3f, age_loss=%.3f')
             print(format_str % (datetime.now(), step, d_loss, g_loss, fea_loss, age_loss))
-
+            print('5!!!!')
             # Save the model checkpoint periodically.
             if step % SAVE_INTERVAL == SAVE_INTERVAL-1 or (step + 1) == FLAGS.max_steps:
                 checkpoint_path = os.path.join(FLAGS.checkpoint_dir)
